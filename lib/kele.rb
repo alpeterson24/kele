@@ -8,9 +8,9 @@ module Kele
          base_uri "https://www.bloc.io/api/v1"
 
          def initialize(email, password)
-             @auth = {email: email, password: password}
+             auth = {email: email, password: password}
 
-             post_response = self.class.post( "/sessions", body: @auth )
+             post_response = self.class.post( "/sessions", body: auth )
 
              @auth_token = post_response["auth_token"]
 
