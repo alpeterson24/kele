@@ -1,10 +1,12 @@
 require_relative "kele"
+require_relative "roadmap"
 require 'httparty'
 
 module Kele
      class Kele
          require 'json'
          include HTTParty
+         include Roadmap
          base_uri "https://www.bloc.io/api/v1"
 
          def initialize(email, password)
@@ -20,8 +22,7 @@ module Kele
          def get_me
              response = self.class.get( "/users/me", headers: {"authorization" => @auth_token} )
 
-             user_data = parser(response.body)
-             user_data.each {|key, value| puts "#{key} - #{value}"}
+             parser(response.body)
          end
 
          def get_mentor_availability(m_id)
@@ -31,7 +32,7 @@ module Kele
              )
 
              mentor_availability = parser(response.body)
-             mentor_availability.each {|time| puts "#{time} \n" if time["booked"] == nil}
+             mentor_availability.map {|time| time if time ["booked"] == nil}
          end
 
         private
