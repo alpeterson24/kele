@@ -19,14 +19,25 @@ module Kele
 
          def get_me
              response = self.class.get( "/users/me", headers: {"authorization" => @auth_token} )
-             parse_user_data(response.body)
+
+             user_data = parser(response.body)
+             user_data.each {|key, value| puts "#{key} - #{value}"}
+         end
+
+         def get_mentor_availability(m_id)
+             response = self.class.get(
+                 "/mentors/#{m_id}/student_availability",
+                 headers: {"authorization" => @auth_token}
+             )
+
+             mentor_availability = parser(response.body)
+             mentor_availability.each {|time| puts "#{time} \n" if time["booked"] == nil}
          end
 
         private
 
-         def parse_user_data(resp)
-             user_hash = JSON.parse(resp)
-             puts user_hash
+         def parser(data)
+             JSON.parse(data)
          end
       end
  end
