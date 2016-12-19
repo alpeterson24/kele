@@ -1,16 +1,16 @@
 module Roadmap
-     def get_roadmap(r_id)
+     def get_roadmap(roadmap_id)
          response = self.class.get(
-             "/roadmaps/#{r_id}",
+             "/roadmaps/#{roadmap_id}",
              headers: {"authorization" => @auth_token}
          )
 
          parser(response.body)
      end
 
-     def get_checkpoint(c_id)
+     def get_checkpoint(checkpoint_id)
          response = self.class.get(
-             "/checkpoints/#{c_id}",
+             "/checkpoints/#{checkpoint_id}",
              headers: {"authorization" => @auth_token}
          )
 

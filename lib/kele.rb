@@ -25,14 +25,14 @@ module Kele
              parser(response.body)
          end
 
-         def get_mentor_availability(m_id)
+         def get_mentor_availability(mentor_id)
              response = self.class.get(
-                 "/mentors/#{m_id}/student_availability",
+                 "/mentors/#{mentor_id}/student_availability",
                  headers: {"authorization" => @auth_token}
              )
 
              mentor_availability = parser(response.body)
-             mentor_availability.map {|time| time if time ["booked"] == nil}
+             mentor_availability.map {|time| time if time["booked"] == nil}
          end
 
          def get_messages(*page)
@@ -41,6 +41,7 @@ module Kele
                  "/message_threads",
                  headers: {"authorization" => @auth_token},
              )
+
              parser(response.body)
          end
 
@@ -55,6 +56,16 @@ module Kele
              )
              parser(msg_post_response.body)
          end
+
+         def create_submission(enrollment_id, checkpoint_id, options={})
+            submission_data = {enrollment_id: enrollment_id, checkpoint_id: checkpoint_id, assignment_branch: options[:branch], assignment_commit_link: options[:link], comment: options[:comment]}
+
+            post_response = self.class.post(
+                "/checkpoint_submissions",
+                {headers: {"authorization" => @auth_token}, body: submission_data}
+            )
+            parser(post_response.body)
+        end
 
         private
 
