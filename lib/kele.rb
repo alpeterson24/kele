@@ -39,7 +39,7 @@ module Kele
              raise ArgumentError if page.length > 1
              response = self.class.get(
                  "/message_threads",
-                 headers: {"authorization" => @auth_token},
+                 headers: {"authorization" => @auth_token}
              )
 
              parser(response.body)
